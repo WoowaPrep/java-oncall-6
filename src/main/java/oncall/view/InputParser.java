@@ -1,7 +1,11 @@
 package oncall.view;
 
 import java.time.DayOfWeek;
+import java.util.Arrays;
+import java.util.List;
+import oncall.domain.HolidayWorkers;
 import oncall.domain.OncallDate;
+import oncall.domain.WeekdayWorkers;
 import oncall.exception.ErrorMessage;
 import oncall.exception.OncallException;
 
@@ -9,9 +13,15 @@ public class InputParser {
 
     private static final String DELIMITER = ",";
     private static final String NUMERIC_REGEX = "\\d+";
+
     private static final int MONTH_DAY_PAIR_COUNT = 2;
     private static final int MONTH_START_THRESHOLD = 1;
     private static final int MONTH_END_THRESHOLD = 12;
+
+    private static final int MIN_WORKER_THRESHOLD = 5;
+    private static final int MAX_WORKER_THRESHOLD = 35;
+
+    private static final int NAME_THRESHOLD = 5;
 
     public static OncallDate parseMonthStartDay(String input) {
         String[] monthDay = input.split(DELIMITER);
@@ -23,6 +33,43 @@ public class InputParser {
         int startDay = 1;
         DayOfWeek dayOfWeek = OncallDate.createDayOfWeek(dayOfWeekInput);
         return OncallDate.of(monthValue, startDay, dayOfWeek);
+    }
+
+    public static WeekdayWorkers parseWeekdayWorkers(String input) {
+        String[] names = input.split(DELIMITER);
+        validateWorkerName(names);
+        validateWorkerCount(names);
+        validateDuplicate(names);
+
+        return new WeekdayWorkers(List.of(names));
+    }
+
+    public static HolidayWorkers parseHolidayWorkers(String input) {
+        String[] names = input.split(DELIMITER);
+        validateWorkerName(names);
+        validateWorkerCount(names);
+        validateDuplicate(names);
+
+        return new HolidayWorkers(List.of(names));
+    }
+
+    private static void validateDuplicate(String[] input) {
+        if (input.length != (int) Arrays.stream(input).distinct().count()) {
+            throw OncallException.from(ErrorMessage.INVALID_WORKERS);
+        }
+    }
+
+    private static void validateWorkerCount(String[] input) {
+        if (input.length < MIN_WORKER_THRESHOLD || input.length > MAX_WORKER_THRESHOLD) {
+            throw OncallException.from(ErrorMessage.INVALID_WORKERS);
+        }
+    }
+
+    private static void validateWorkerName(String[] input) {
+        if (Arrays.stream(input)
+                .anyMatch(name -> name.trim().isEmpty() || name.trim().length() > NAME_THRESHOLD)) {
+            throw OncallException.from(ErrorMessage.INVALID_WORKERS);
+        }
     }
 
     private static void validateMonthStartDay(String[] input) {

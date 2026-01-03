@@ -1,7 +1,10 @@
 package oncall;
 
 import java.util.function.Supplier;
+import oncall.domain.HolidayWorkers;
 import oncall.domain.OncallDate;
+import oncall.domain.WeekdayWorkers;
+import oncall.domain.Workers;
 import oncall.exception.ErrorMessage;
 import oncall.exception.OncallException;
 import oncall.view.InputParser;
@@ -24,12 +27,23 @@ public class EmergencySchedule {
 
     public void assign() {
         OncallDate date = readMonthStartDay();
+        Workers workers = readWorkers();
     }
 
     private OncallDate readMonthStartDay() {
         return retry(() -> {
             String monthStartDayInput = inputView.readMonthStartDay();
             return InputParser.parseMonthStartDay(monthStartDayInput);
+        });
+    }
+
+    private Workers readWorkers() {
+        return retry(() -> {
+            String weekdayWorkersInput = inputView.readWeekdayWorkers();
+            String holidayWorkersInput = inputView.readHolidayWorkers();
+            WeekdayWorkers weekdayWorkers = InputParser.parseWeekdayWorkers(weekdayWorkersInput);
+            HolidayWorkers holidayWorkers = InputParser.parseHolidayWorkers(holidayWorkersInput);
+            return new Workers(weekdayWorkers, holidayWorkers);
         });
     }
 
