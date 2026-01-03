@@ -11,25 +11,18 @@ public class OncallDate {
     private static final int MIN_MONTH = 1;
     private static final int MAX_MONTH = 12;
     private static final int MIN_DAY = 1;
-    private static final int MAX_DAY = 31;
 
     private static final int WEEK_LENGTH = 7;
     private static final int DAY_OFFSET = 2;
     private static final int DAY_ADJUSTMENT = 1;
 
     private static final Map<Integer, Integer> DAYS_IN_MONTH = Map.ofEntries(
-            Map.entry(1, 31),
-            Map.entry(2, 28),
-            Map.entry(3, 31),
-            Map.entry(4, 30),
-            Map.entry(5, 31),
-            Map.entry(6, 30),
-            Map.entry(7, 31),
-            Map.entry(8, 31),
-            Map.entry(9, 30),
-            Map.entry(10, 31),
-            Map.entry(11, 30),
-            Map.entry(12, 31)
+            Map.entry(1, 31), Map.entry(2, 28),
+            Map.entry(3, 31), Map.entry(4, 30),
+            Map.entry(5, 31), Map.entry(6, 30),
+            Map.entry(7, 31), Map.entry(8, 31),
+            Map.entry(9, 30), Map.entry(10, 31),
+            Map.entry(11, 30), Map.entry(12, 31)
     );
 
     private final int month;
@@ -50,10 +43,18 @@ public class OncallDate {
 
     public OncallDate plusOneDay() {
         int maxDay = DAYS_IN_MONTH.get(month);
-        if (maxDay < this.day + 1) {
-            return OncallDate.of(this.month + 1, 1, this.firstDayOfWeek.plus(1));
+        if (maxDay < day + 1) {
+            return OncallDate.of(month + 1, 1, firstDayOfWeek);
         }
-        return OncallDate.of(this.month, this.day + 1, this.firstDayOfWeek);
+
+        return OncallDate.of(month, day + 1, firstDayOfWeek);
+    }
+
+    public OncallDate minusOneDay() {
+        if (day == 1) {
+            return OncallDate.of(month - 1, DAYS_IN_MONTH.get(month -1), firstDayOfWeek);
+        }
+        return OncallDate.of(month, day - 1, firstDayOfWeek);
     }
 
     public String getDayOfWeekFirstString() {
@@ -103,11 +104,8 @@ public class OncallDate {
     }
 
     public boolean isHoliday() {
-        return Arrays.stream(Holiday.values()).anyMatch(holiday -> {
-            int day = holiday.getMonthDay().getDayOfMonth();
-            int month = holiday.getMonthDay().getMonthValue();
-            return this.month == month && this.day == day;
-        });
+        return Arrays.stream(Holiday.values())
+                .anyMatch(holiday -> holiday.isHoliday(month, day));
     }
 
     public int getMonth() {

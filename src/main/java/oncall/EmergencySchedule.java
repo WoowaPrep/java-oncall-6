@@ -13,14 +13,16 @@ public class EmergencySchedule {
 
     private InputView inputView;
     private OutputView outputView;
+    private InputParser inputParser;
 
     public EmergencySchedule() {
-        this(new InputView(), new OutputView());
+        this(new InputView(), new OutputView(), new InputParser());
     }
 
-    public EmergencySchedule(InputView inputView, OutputView outputView) {
+    public EmergencySchedule(InputView inputView, OutputView outputView, InputParser inputParser) {
         this.inputView = inputView;
         this.outputView = outputView;
+        this.inputParser = inputParser;
     }
 
     public void assign() {
@@ -33,7 +35,7 @@ public class EmergencySchedule {
         return retry(() -> {
             String monthStartDayInput = inputView.readMonthStartDay();
             outputView.printNewLine();
-            return InputParser.parseMonthStartDay(monthStartDayInput);
+            return inputParser.parseMonthStartDay(monthStartDayInput);
         });
     }
 
@@ -43,8 +45,9 @@ public class EmergencySchedule {
             outputView.printNewLine();
             String holidayWorkersInput = inputView.readHolidayWorkers();
             outputView.printNewLine();
-            WeekdayWorkers weekdayWorkers = InputParser.parseWeekdayWorkers(weekdayWorkersInput);
-            HolidayWorkers holidayWorkers = InputParser.parseHolidayWorkers(holidayWorkersInput);
+
+            WeekdayWorkers weekdayWorkers = inputParser.parseWeekdayWorkers(weekdayWorkersInput);
+            HolidayWorkers holidayWorkers = inputParser.parseHolidayWorkers(holidayWorkersInput);
             return new Workers(weekdayWorkers, holidayWorkers);
         });
     }

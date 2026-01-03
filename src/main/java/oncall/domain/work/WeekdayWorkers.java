@@ -14,15 +14,17 @@ public class WeekdayWorkers {
         this.workerCount = workers.size();
     }
 
-    public String getWorker() {
-        if (workerIndex > 0) {
-            String yesterdayWorker = workers.get((workerIndex - 1) % workerCount);
-            String todayWorker = workers.get(workerIndex % workerCount);
-            if (yesterdayWorker.equals(todayWorker)) {
-                Collections.swap(workers, workerIndex, (workerIndex + 1) % workerCount);
-            }
-        }
+    public void swapWithNext() {
+        Collections.swap(workers, workerIndex, workerIndex + 1);
+    }
 
-        return workers.get(workerIndex++ % workerCount);
+    public String assignWorker() {
+        String worker = getWorker();
+        workerIndex++;
+        return worker;
+    }
+
+    public String getWorker() {
+        return workers.get(workerIndex % workerCount);
     }
 }

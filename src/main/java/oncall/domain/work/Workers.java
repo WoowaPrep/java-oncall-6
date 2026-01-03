@@ -14,8 +14,41 @@ public class Workers {
 
     public String work(OncallDate date) {
         if (date.isWeekday() && !date.isHoliday()) {
-            return weekdayWorkers.getWorker();
+            OncallDate yesterday = date.minusOneDay();
+            if (yesterday.isWeekend() || yesterday.isHoliday()) {
+                return assignWeekdayWorker();
+            }
+
+            return weekdayWorkers.assignWorker();
         }
-        return holidayWorkers.getWorker();
+
+        OncallDate yesterday = date.minusOneDay();
+        if (yesterday.isWeekend() && !yesterday.isHoliday()) {
+            return assignHolidayWorker();
+        }
+
+        return holidayWorkers.assignWorker();
+    }
+
+    private String assignWeekdayWorker() {
+        if (isSameWorker()) {
+            weekdayWorkers.swapWithNext();
+        }
+
+        return weekdayWorkers.assignWorker();
+    }
+
+    private String assignHolidayWorker() {
+        if (isSameWorker()) {
+            holidayWorkers.swapWithNext();
+        }
+
+        return holidayWorkers.assignWorker();
+    }
+
+    private boolean isSameWorker() {
+        String firstWorker = weekdayWorkers.getWorker();
+        String secondWorker = holidayWorkers.getWorker();
+        return firstWorker.equals(secondWorker);
     }
 }
