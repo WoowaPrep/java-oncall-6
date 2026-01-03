@@ -50,13 +50,6 @@ public class OncallDate {
         return OncallDate.of(month, day + 1, firstDayOfWeek);
     }
 
-    public OncallDate minusOneDay() {
-        if (day == 1) {
-            return OncallDate.of(month - 1, DAYS_IN_MONTH.get(month -1), firstDayOfWeek);
-        }
-        return OncallDate.of(month, day - 1, firstDayOfWeek);
-    }
-
     public String getDayOfWeekFirstString() {
         if (getDayOfWeek() == DayOfWeek.MONDAY) return "월";
         if (getDayOfWeek() == DayOfWeek.TUESDAY) return "화";

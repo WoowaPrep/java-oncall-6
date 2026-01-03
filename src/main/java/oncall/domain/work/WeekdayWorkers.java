@@ -1,5 +1,6 @@
 package oncall.domain.work;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,18 +11,17 @@ public class WeekdayWorkers {
     private int workerIndex = 0;
 
     public WeekdayWorkers(List<String> workers) {
-        this.workers = workers;
+        this.workers = new ArrayList<>(workers);
         this.workerCount = workers.size();
     }
 
     public void swapWithNext() {
-        Collections.swap(workers, workerIndex, workerIndex + 1);
+        int nextIndex = (workerIndex + 1) % workerCount;
+        Collections.swap(workers, workerIndex, nextIndex);
     }
 
-    public String assignWorker() {
-        String worker = getWorker();
+    public void incrementIndex() {
         workerIndex++;
-        return worker;
     }
 
     public String getWorker() {

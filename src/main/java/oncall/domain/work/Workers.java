@@ -4,8 +4,9 @@ import oncall.domain.date.OncallDate;
 
 public class Workers {
 
-    private WeekdayWorkers weekdayWorkers;
-    private HolidayWorkers holidayWorkers;
+    private final WeekdayWorkers weekdayWorkers;
+    private final HolidayWorkers holidayWorkers;
+    private String lastWorker = null;
 
     public Workers(WeekdayWorkers weekdayWorkers, HolidayWorkers holidayWorkers) {
         this.weekdayWorkers = weekdayWorkers;
@@ -14,41 +15,41 @@ public class Workers {
 
     public String work(OncallDate date) {
         if (date.isWeekday() && !date.isHoliday()) {
-            OncallDate yesterday = date.minusOneDay();
-            if (yesterday.isWeekend() || yesterday.isHoliday()) {
-                return assignWeekdayWorker();
-            }
-
-            return weekdayWorkers.assignWorker();
+            return assignWeekdayWorker();
         }
-
-        OncallDate yesterday = date.minusOneDay();
-        if (yesterday.isWeekend() && !yesterday.isHoliday()) {
-            return assignHolidayWorker();
-        }
-
-        return holidayWorkers.assignWorker();
+        return assignHolidayWorker();
     }
 
     private String assignWeekdayWorker() {
-        if (isSameWorker()) {
+        String worker = weekdayWorkers.getWorker();
+
+        if (needsSwap(worker)) {
             weekdayWorkers.swapWithNext();
+            worker = weekdayWorkers.getWorker();
         }
 
-        return weekdayWorkers.assignWorker();
+        weekdayWorkers.incrementIndex();
+        lastWorker = worker;
+        return worker;
     }
 
     private String assignHolidayWorker() {
-        if (isSameWorker()) {
+        String worker = holidayWorkers.getWorker();
+
+        if (needsSwap(worker)) {
             holidayWorkers.swapWithNext();
+            worker = holidayWorkers.getWorker();
         }
 
-        return holidayWorkers.assignWorker();
+        holidayWorkers.incrementIndex();
+        lastWorker = worker;
+        return worker;
     }
 
-    private boolean isSameWorker() {
-        String firstWorker = weekdayWorkers.getWorker();
-        String secondWorker = holidayWorkers.getWorker();
-        return firstWorker.equals(secondWorker);
+    private boolean needsSwap(String worker) {
+        if (lastWorker == null) {
+            return false;
+        }
+        return lastWorker.equals(worker);
     }
 }
