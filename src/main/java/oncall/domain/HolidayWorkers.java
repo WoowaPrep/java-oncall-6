@@ -1,12 +1,28 @@
 package oncall.domain;
 
+import java.util.Collections;
 import java.util.List;
 
 public class HolidayWorkers {
 
-    private List<String> workers;
+    private final List<String> workers;
+    private final int workerCount;
+    private int workerIndex = 0;
 
     public HolidayWorkers(List<String> workers) {
         this.workers = workers;
+        this.workerCount = workers.size();
+    }
+
+    public String getWorker() {
+        if (workerIndex > 0) {
+            String yesterdayWorker = workers.get((workerIndex - 1) % workerCount);
+            String todayWorker = workers.get(workerIndex % workerCount);
+            if (yesterdayWorker.equals(todayWorker)) {
+                Collections.swap(workers, workerIndex, (workerIndex + 1) % workerCount);
+            }
+        }
+
+        return workers.get(workerIndex++ % workerCount);
     }
 }

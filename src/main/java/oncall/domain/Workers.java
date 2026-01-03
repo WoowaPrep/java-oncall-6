@@ -9,4 +9,11 @@ public class Workers {
         this.weekdayWorkers = weekdayWorkers;
         this.holidayWorkers = holidayWorkers;
     }
+
+    public String work(OncallDate date) {
+        if (date.isWeekday() && !date.isHoliday()) {
+            return weekdayWorkers.getWorker();
+        }
+        return holidayWorkers.getWorker();
+    }
 }

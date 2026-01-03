@@ -11,6 +11,7 @@ public class OncallDate {
     private static final int MIN_MONTH = 1;
     private static final int MAX_MONTH = 12;
     private static final int MIN_DAY = 1;
+    private static final int MAX_DAY = 31;
 
     private static final int WEEK_LENGTH = 7;
     private static final int DAY_OFFSET = 2;
@@ -47,6 +48,26 @@ public class OncallDate {
         return new OncallDate(month, day, firstDayOfWeek);
     }
 
+    public OncallDate plusOneDay() {
+        int maxDay = DAYS_IN_MONTH.get(month);
+        if (maxDay < this.day + 1) {
+            return OncallDate.of(this.month + 1, 1, this.firstDayOfWeek.plus(1));
+        }
+        return OncallDate.of(this.month, this.day + 1, this.firstDayOfWeek);
+    }
+
+    public String getDayOfWeekFirstString() {
+        if (getDayOfWeek() == DayOfWeek.MONDAY) return "월";
+        if (getDayOfWeek() == DayOfWeek.TUESDAY) return "화";
+        if (getDayOfWeek() == DayOfWeek.WEDNESDAY) return "수";
+        if (getDayOfWeek() == DayOfWeek.THURSDAY) return "목";
+        if (getDayOfWeek() == DayOfWeek.FRIDAY) return "금";
+        if (getDayOfWeek() == DayOfWeek.SATURDAY) return "토";
+        if (getDayOfWeek() == DayOfWeek.SUNDAY) return "일";
+
+        throw OncallException.from(ErrorMessage.INVALID_DAY);
+    }
+
     public static DayOfWeek createDayOfWeek(String input) {
         if (input.equals("월")) return DayOfWeek.MONDAY;
         if (input.equals("화")) return DayOfWeek.TUESDAY;
@@ -81,11 +102,7 @@ public class OncallDate {
                 || dayOfWeek == DayOfWeek.SUNDAY;
     }
 
-    public boolean is(DayOfWeek dayOfWeek) {
-        return getDayOfWeek() == dayOfWeek;
-    }
-
-    public boolean isHoliday(DayOfWeek dayOfWeek) {
+    public boolean isHoliday() {
         return Arrays.stream(Holiday.values()).anyMatch(holiday -> {
             int day = holiday.getMonthDay().getDayOfMonth();
             int month = holiday.getMonthDay().getMonthValue();

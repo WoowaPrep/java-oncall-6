@@ -4,7 +4,6 @@ import camp.nextstep.edu.missionutils.Console;
 
 public class InputView {
 
-    private final static String NEW_LINE = System.lineSeparator();
     private final static String MONTH_START_DAY_INPUT_MESSAGE =
             "비상 근무를 배정할 월과 시작 요일을 입력하세요>";
     private final static String WEEKDAY_WORK_LIST_INPUT_MESSAGE =
@@ -29,9 +28,5 @@ public class InputView {
 
     private String readLine() {
         return Console.readLine();
-    }
-
-    private void printNewLine() {
-        System.out.printf(NEW_LINE);
     }
 }

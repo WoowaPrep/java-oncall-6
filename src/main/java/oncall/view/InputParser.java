@@ -21,7 +21,7 @@ public class InputParser {
     private static final int MIN_WORKER_THRESHOLD = 5;
     private static final int MAX_WORKER_THRESHOLD = 35;
 
-    private static final int NAME_THRESHOLD = 5;
+    private static final int NAME_LENGTH_THRESHOLD = 5;
 
     public static OncallDate parseMonthStartDay(String input) {
         String[] monthDay = input.split(DELIMITER);
@@ -67,7 +67,8 @@ public class InputParser {
 
     private static void validateWorkerName(String[] input) {
         if (Arrays.stream(input)
-                .anyMatch(name -> name.trim().isEmpty() || name.trim().length() > NAME_THRESHOLD)) {
+                .anyMatch(name -> name.trim().isEmpty() ||
+                        name.trim().length() > NAME_LENGTH_THRESHOLD)) {
             throw OncallException.from(ErrorMessage.INVALID_WORKERS);
         }
     }
