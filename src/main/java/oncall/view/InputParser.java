@@ -23,7 +23,7 @@ public class InputParser {
 
     private static final int NAME_LENGTH_THRESHOLD = 5;
 
-    public static OncallDate parseMonthStartDay(String input) {
+    public OncallDate parseMonthStartDay(String input) {
         String[] monthDay = input.split(DELIMITER);
         validateMonthStartDay(monthDay);
 
@@ -35,7 +35,7 @@ public class InputParser {
         return OncallDate.of(monthValue, startDay, dayOfWeek);
     }
 
-    public static WeekdayWorkers parseWeekdayWorkers(String input) {
+    public WeekdayWorkers parseWeekdayWorkers(String input) {
         String[] names = input.split(DELIMITER);
         validateWorkerName(names);
         validateWorkerCount(names);
@@ -44,7 +44,7 @@ public class InputParser {
         return new WeekdayWorkers(List.of(names));
     }
 
-    public static HolidayWorkers parseHolidayWorkers(String input) {
+    public HolidayWorkers parseHolidayWorkers(String input) {
         String[] names = input.split(DELIMITER);
         validateWorkerName(names);
         validateWorkerCount(names);
@@ -53,19 +53,19 @@ public class InputParser {
         return new HolidayWorkers(List.of(names));
     }
 
-    private static void validateDuplicate(String[] input) {
+    private void validateDuplicate(String[] input) {
         if (input.length != (int) Arrays.stream(input).distinct().count()) {
             throw OncallException.from(ErrorMessage.INVALID_WORKERS);
         }
     }
 
-    private static void validateWorkerCount(String[] input) {
+    private void validateWorkerCount(String[] input) {
         if (input.length < MIN_WORKER_THRESHOLD || input.length > MAX_WORKER_THRESHOLD) {
             throw OncallException.from(ErrorMessage.INVALID_WORKERS);
         }
     }
 
-    private static void validateWorkerName(String[] input) {
+    private void validateWorkerName(String[] input) {
         if (Arrays.stream(input)
                 .anyMatch(name -> name.trim().isEmpty() ||
                         name.trim().length() > NAME_LENGTH_THRESHOLD)) {
@@ -73,7 +73,7 @@ public class InputParser {
         }
     }
 
-    private static void validateMonthStartDay(String[] input) {
+    private void validateMonthStartDay(String[] input) {
         validateMonthDayPair(input);
         String monthInput = input[0];
         String startDayInput = input[1];
@@ -82,29 +82,29 @@ public class InputParser {
         validateStartDay(startDayInput);
     }
 
-    private static void validateMonthDayPair(String[] input) {
+    private void validateMonthDayPair(String[] input) {
         if (input.length != MONTH_DAY_PAIR_COUNT) {
             throw OncallException.from(ErrorMessage.INVALID_MONTH_DAY_PAIR);
         }
     }
 
-    private static void validateMonth(String input) {
+    private void validateMonth(String input) {
         validateMonthNumeric(input);
         Integer monthValue = Integer.parseInt(input);
         validateMonthRange(monthValue);
     }
 
-    private static void validateStartDay(String input) {
+    private void validateStartDay(String input) {
         OncallDate.validateStartDay(input);
     }
 
-    private static void validateMonthNumeric(String input) {
+    private void validateMonthNumeric(String input) {
         if (!input.matches(NUMERIC_REGEX)) {
             throw OncallException.from(ErrorMessage.INVALID_MONTH);
         }
     }
 
-    private static void validateMonthRange(Integer input) {
+    private void validateMonthRange(Integer input) {
         if (input < MONTH_START_THRESHOLD || input > MONTH_END_THRESHOLD) {
             throw OncallException.from(ErrorMessage.INVALID_MONTH);
         }
