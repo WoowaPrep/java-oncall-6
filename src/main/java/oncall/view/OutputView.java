@@ -20,7 +20,7 @@ public class OutputView {
     }
 
     private void printWorkScheduleLine(OncallDate date, Workers workers) {
-        if (date.isWeekend() || date.isHoliday()) {
+        if (date.isWeekend() && date.isHoliday()) {
             System.out.printf(WORK_SCHEDULE_HOLIDAY_FORMAT,
                     date.getMonth(), date.getDay(), date.getDayOfWeekFirstString(), workers.work(date));
         }
