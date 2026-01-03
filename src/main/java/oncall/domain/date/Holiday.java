@@ -22,7 +22,7 @@ public enum Holiday {
         this.name = name;
     }
 
-    public MonthDay getMonthDay() {
-        return date;
+    public boolean isHoliday(int month, int day) {
+        return date.getMonthValue() == month && date.getDayOfMonth() == day;
     }
 }
