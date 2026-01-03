@@ -1,4 +1,6 @@
-package oncall.domain;
+package oncall.domain.work;
+
+import oncall.domain.date.OncallDate;
 
 public class Workers {
 

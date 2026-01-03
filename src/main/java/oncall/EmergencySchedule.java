@@ -1,10 +1,10 @@
 package oncall;
 
 import java.util.function.Supplier;
-import oncall.domain.HolidayWorkers;
-import oncall.domain.OncallDate;
-import oncall.domain.WeekdayWorkers;
-import oncall.domain.Workers;
+import oncall.domain.work.HolidayWorkers;
+import oncall.domain.date.OncallDate;
+import oncall.domain.work.WeekdayWorkers;
+import oncall.domain.work.Workers;
 import oncall.view.InputParser;
 import oncall.view.InputView;
 import oncall.view.OutputView;

@@ -1,7 +1,7 @@
 package oncall.view;
 
-import oncall.domain.OncallDate;
-import oncall.domain.Workers;
+import oncall.domain.date.OncallDate;
+import oncall.domain.work.Workers;
 
 public class OutputView {
 

@@ -3,9 +3,9 @@ package oncall.view;
 import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.List;
-import oncall.domain.HolidayWorkers;
-import oncall.domain.OncallDate;
-import oncall.domain.WeekdayWorkers;
+import oncall.domain.work.HolidayWorkers;
+import oncall.domain.date.OncallDate;
+import oncall.domain.work.WeekdayWorkers;
 import oncall.exception.ErrorMessage;
 import oncall.exception.OncallException;
 

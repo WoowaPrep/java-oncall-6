@@ -1,15 +1,15 @@
-package oncall.domain;
+package oncall.domain.work;
 
 import java.util.Collections;
 import java.util.List;
 
-public class HolidayWorkers {
+public class WeekdayWorkers {
 
     private final List<String> workers;
     private final int workerCount;
     private int workerIndex = 0;
 
-    public HolidayWorkers(List<String> workers) {
+    public WeekdayWorkers(List<String> workers) {
         this.workers = workers;
         this.workerCount = workers.size();
     }
