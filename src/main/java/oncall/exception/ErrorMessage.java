@@ -2,8 +2,9 @@ package oncall.exception;
 
 public enum ErrorMessage {
 
-    INVALID_MONTH("유효한 월 범위가 아닙니다."),
-    INVALID_DAY("유효한 일 범위가 아닙니다."),
+    INVALID_MONTH_DAY_PAIR("유효하지 않은 입력 값입니다. 다시 입력해 주세요."),
+    INVALID_MONTH("유효하지 않은 입력 값입니다. 다시 입력해 주세요."),
+    INVALID_DAY("유효하지 않은 입력 값입니다. 다시 입력해 주세요."),
     ;
 
     private static final String PREFIX = "[ERROR] ";

@@ -47,6 +47,22 @@ public class OncallDate {
         return new OncallDate(month, day, firstDayOfWeek);
     }
 
+    public static DayOfWeek createDayOfWeek(String input) {
+        if (input.equals("월")) return DayOfWeek.MONDAY;
+        if (input.equals("화")) return DayOfWeek.TUESDAY;
+        if (input.equals("수")) return DayOfWeek.WEDNESDAY;
+        if (input.equals("목")) return DayOfWeek.THURSDAY;
+        if (input.equals("금")) return DayOfWeek.FRIDAY;
+        if (input.equals("토")) return DayOfWeek.SATURDAY;
+        if (input.equals("일")) return DayOfWeek.SUNDAY;
+
+        throw OncallException.from(ErrorMessage.INVALID_DAY);
+    }
+
+    public static void validateStartDay(String input) {
+        createDayOfWeek(input);
+    }
+
     public DayOfWeek getDayOfWeek() {
         int startValue = firstDayOfWeek.getValue();
         int dayValue = (startValue + day - DAY_OFFSET) % WEEK_LENGTH + DAY_ADJUSTMENT;
